@@ -15,3 +15,4 @@ mock
 django-nose
 coverage
 django-coverage
+django-libs
