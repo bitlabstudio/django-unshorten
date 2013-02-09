@@ -5,28 +5,28 @@ DEBUG = True
 
 SITE_ID = 1
 
-DATABASES={
+DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": ":memory:",
     }
 }
 
-ROOT_URLCONF='unshorten.tests.urls'
+ROOT_URLCONF = 'unshorten.tests.urls'
 
-STATIC_URL='/static/'
+STATIC_URL = '/static/'
 
-STATIC_ROOT=os.path.join(__file__, '../../static/')
+STATIC_ROOT = os.path.join(__file__, '../../static/')
 
-STATICFILES_DIRS=(
+STATICFILES_DIRS = (
     os.path.join(__file__, 'test_static'),
 )
 
-TEMPLATE_DIRS=(
+TEMPLATE_DIRS = (
     os.path.join(os.path.dirname(__file__), '../templates'),
 )
 
-COVERAGE_REPORT_HTML_OUTPUT_DIR=os.path.join(
+COVERAGE_REPORT_HTML_OUTPUT_DIR = os.path.join(
     os.path.dirname(__file__), 'coverage')
 
 COVERAGE_MODULE_EXCLUDES = [
@@ -54,3 +54,9 @@ INTERNAL_APPS = [
 INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS
 
 COVERAGE_MODULE_EXCLUDES += EXTERNAL_APPS
+
+
+# Unshorten settings
+# ==================
+
+UNSHORTEN_RATE_LIMIT_CLASS = 'unshorten.rate_limit.RateLimit'
