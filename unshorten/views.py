@@ -39,6 +39,5 @@ class UnshortenAPIView(View):
                 return HttpResponse(json.dumps(None))
             else:
                 if resp.code == 200:
-                    return HttpResponse(
-                        json.dumps({'long_url': resp.url}))
+                    return HttpResponse(json.dumps({'long_url': resp.url}))
         return HttpResponse(json.dumps(None))
