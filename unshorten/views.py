@@ -10,6 +10,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View
 
 from unshorten.backend import RateLimit
+from unshorten.models import UnshortenURL
 
 
 class UnshortenAPIView(View):
@@ -28,6 +29,13 @@ class UnshortenAPIView(View):
         if self.short_url:
             self.rate_limit.log_api_call()
             try:
+                cached_url = UnshortenURL.objects.get(short_url=self.short_url)
+            except UnshortenURL.DoesNotExist:
+                cached_url = UnshortenURL(short_url=self.short_url)
+            else:
+                return HttpResponse(
+                    json.dumps({'long_url': cached_url.long_url}))
+            try:
                 resp = urllib2.urlopen(self.short_url)
             except (
                     urllib2.HTTPError, urllib2.URLError,
@@ -35,5 +43,7 @@ class UnshortenAPIView(View):
                 pass
             else:
                 if resp.code == 200:
+                    cached_url.long_url = resp.url
+                    cached_url.save()
                     return HttpResponse(json.dumps({'long_url': resp.url}))
         return HttpResponse(json.dumps(None))
