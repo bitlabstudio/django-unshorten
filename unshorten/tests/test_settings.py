@@ -16,7 +16,7 @@ ROOT_URLCONF = 'unshorten.tests.urls'
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(__file__, '../../static/')
+STATIC_ROOT = os.path.join(__file__, '../../../static/')
 
 STATICFILES_DIRS = (
     os.path.join(__file__, 'test_static'),
