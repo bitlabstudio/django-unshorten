@@ -59,4 +59,5 @@ COVERAGE_MODULE_EXCLUDES += EXTERNAL_APPS
 # Unshorten settings
 # ==================
 
-UNSHORTEN_RATE_LIMIT_CLASS = 'unshorten.rate_limit.RateLimit'
+UNSHORTEN_RATE_LIMIT_CLASS = 'unshorten.rate_limit.SimpleRateLimit'
+UNSHORTEN_DAILY_LIMIT = 5000
