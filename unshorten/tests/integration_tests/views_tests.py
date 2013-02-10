@@ -8,6 +8,7 @@ from django.test import TestCase
 from django_libs.tests.factories import UserFactory
 from django_libs.tests.mixins import ViewTestMixin
 
+from unshorten.models import APICallDayHistory
 from unshorten.rate_limit import RateLimit
 
 
@@ -41,6 +42,8 @@ class UnshortenAPIViewTestCase(ViewTestMixin, TestCase):
         self.assertEqual(
             json.loads(resp.content), {'long_url': self.long_url}, msg=(
                 'Should return the long url.'))
+        self.assertEqual(APICallDayHistory.objects.all().count(), 1, msg=(
+            'Should create a APICallDayHistory object.'))
 
         # tests for an exceeded rate limit
         RateLimit.is_rate_limit_exceeded = Mock(return_value=True)
@@ -55,3 +58,6 @@ class UnshortenAPIViewTestCase(ViewTestMixin, TestCase):
         resp = self.client.get(self.get_url(), data=self.get_data_payload())
         self.assertEqual(resp.content, 'null', msg=(
             'Should return the long url.'))
+        history = APICallDayHistory.objects.get()
+        self.assertEqual(history.amount_api_calls, 2, msg=(
+            'when called again, the amount of api calls should be increased.'))

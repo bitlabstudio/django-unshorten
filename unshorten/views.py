@@ -8,7 +8,10 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
+from django.utils.timezone import now
 from django.views.generic import View
+
+from unshorten.models import APICallDayHistory
 
 
 class UnshortenAPIView(View):
@@ -31,6 +34,15 @@ class UnshortenAPIView(View):
 
     def get(self, request, *args, **kwargs):
         if self.short_url:
+            try:
+                history = APICallDayHistory.objects.get(
+                    user=request.user, creation_date=now().date())
+            except APICallDayHistory.DoesNotExist:
+                history = APICallDayHistory(user=request.user)
+                history.amount_api_calls = 1
+            else:
+                history.amount_api_calls += 1
+            history.save()
             try:
                 resp = urllib2.urlopen(self.short_url)
             except (
