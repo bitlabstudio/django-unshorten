@@ -8,8 +8,8 @@ from django.test import TestCase
 from django_libs.tests.factories import UserFactory
 from django_libs.tests.mixins import ViewTestMixin
 
+from unshorten.backend import RateLimit
 from unshorten.models import APICallDayHistory
-from unshorten.rate_limit import RateLimit
 
 
 class UnshortenAPIViewTestCase(ViewTestMixin, TestCase):
