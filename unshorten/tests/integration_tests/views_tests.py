@@ -42,8 +42,6 @@ class UnshortenAPIViewTestCase(ViewTestMixin, TestCase):
         self.assertEqual(
             json.loads(resp.content), {'long_url': self.long_url}, msg=(
                 'Should return the long url.'))
-        self.assertEqual(APICallDayHistory.objects.all().count(), 1, msg=(
-            'Should create a APICallDayHistory object.'))
 
         # tests for an exceeded rate limit
         RateLimit.is_rate_limit_exceeded = Mock(return_value=True)
