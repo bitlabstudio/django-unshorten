@@ -3,7 +3,6 @@ import httplib
 import json
 import urllib2
 
-from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
@@ -11,6 +10,7 @@ from django.utils.decorators import method_decorator
 from django.utils.timezone import now
 from django.views.generic import View
 
+from unshorten.backend import RateLimit
 from unshorten.models import APICallDayHistory
 
 
@@ -18,12 +18,6 @@ class UnshortenAPIView(View):
     """API view to handle the unshortening."""
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        # importing and instantiating the rate limit the class
-        class_name = settings.UNSHORTEN_RATE_LIMIT_CLASS.split('.')[-1]
-        module_name = '.'.join(
-            settings.UNSHORTEN_RATE_LIMIT_CLASS.split('.')[:-1])
-        module = __import__(module_name, fromlist=[class_name])
-        RateLimit = getattr(module, class_name)
         rate_limit = RateLimit(request)
 
         # checking if rate limit is exceeded
@@ -48,7 +42,7 @@ class UnshortenAPIView(View):
             except (
                     urllib2.HTTPError, urllib2.URLError,
                     httplib.HTTPException):
-                return HttpResponse(json.dumps(None))
+                pass
             else:
                 if resp.code == 200:
                     return HttpResponse(json.dumps({'long_url': resp.url}))
