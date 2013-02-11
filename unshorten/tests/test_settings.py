@@ -34,6 +34,16 @@ COVERAGE_MODULE_EXCLUDES = [
     'migrations', 'fixtures', 'admin$', 'django_extensions',
 ]
 
+MIDDLEWARE_CLASSES = (
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+
+    'johnny.middleware.LocalStoreClearMiddleware',
+    'johnny.middleware.QueryCacheMiddleware',
+)
+
+
 EXTERNAL_APPS = [
     'django.contrib.admin',
     'django.contrib.admindocs',
@@ -61,3 +71,18 @@ COVERAGE_MODULE_EXCLUDES += EXTERNAL_APPS
 
 UNSHORTEN_RATE_LIMIT_CLASS = 'unshorten.rate_limit.SimpleRateLimit'
 UNSHORTEN_DAILY_LIMIT = 5000
+
+
+# johnny cache settings
+# =====================
+
+CACHES = {
+    'default': dict(
+        BACKEND='johnny.backends.memcached.MemcachedCache',
+        LOCATION=['127.0.0.1:11211'],
+        JOHNNY_CACHE=True,
+    )
+}
+JOHNNY_MIDDLEWARE_KEY_PREFIX = 'jc_unshorten'
+
+# JOHNNY_TABLE_WHITELIST = ['unshorten_unshortenurl']
