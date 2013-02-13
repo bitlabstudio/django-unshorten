@@ -1,13 +1,10 @@
 """Decorators for the ``unshorten`` app."""
-import urlparse
 import re
 from functools import wraps
 
-from django.conf import settings
 from django.http import Http404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from django.contrib.auth.views import redirect_to_login
 
 
 def get_username(identifier):

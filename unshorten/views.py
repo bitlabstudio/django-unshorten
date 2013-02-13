@@ -3,20 +3,19 @@ import httplib
 import json
 import urllib2
 
-from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 
 from unshorten.backend import RateLimit
-from unshorten.decorators import http_auth_and_login
+from unshorten.decorators import http_auth
 from unshorten.models import UnshortenURL
 
 
 class UnshortenAPIView(View):
     """API view to handle the unshortening."""
-    @method_decorator(http_auth_and_login)
+    @method_decorator(http_auth)
     def dispatch(self, request, *args, **kwargs):
         self.rate_limit = RateLimit(request)
         # checking if rate limit is exceeded
