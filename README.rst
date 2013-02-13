@@ -47,7 +47,21 @@ also provide::
 Usage
 -----
 
-TODO: Describe usage
+After installation a user should be able to call the api using basic http
+authentication and a query. Example: ::
+
+    https://example.com/unshorten/v1/?HTTP_AUTHORIZATION=Basic+&Zm9vYmFyOmJhcmZvbw==url=http%3A%2F%2Fbitmazk.com 
+    
+In detail, you need to provide the ``HTTP_AUTHORIZATION`` argument with a 
+base64 encoded "username:password" or "email:password" pair preceeded by 
+``Basic`` to authenticate. ::
+
+    HTTP_AUTHORIZATION=Basic+&Zm9vYmFyOmJhcmZvbw==
+
+Also you of course need an ``url`` parameter which holds the actual query 
+string.::
+
+    url=http%3A%2F%2Fbitmazk.com 
 
 
 Contribute
