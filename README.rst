@@ -34,6 +34,15 @@ Hook this app into your ``urls.py``::
         url(r'^unshorten/$', include('unshorten.urls')),
     )
 
+You need to set the class that does the rate limiting. Either set it to::
+
+    UNSHORTEN_RATE_LIMIT_CLASS = 'unshorten.rate_limit.SimpleRateLimit'
+
+This will simply limit the daily api calls to the following setting, you must
+also provide::
+
+    UNSHORTEN_DAILY_LIMIT = 5000
+
 
 Usage
 -----
