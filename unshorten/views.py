@@ -10,15 +10,15 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View
 
 from unshorten.backend import RateLimit
+from unshorten.decorators import http_auth_and_login
 from unshorten.models import UnshortenURL
 
 
 class UnshortenAPIView(View):
     """API view to handle the unshortening."""
-    @method_decorator(login_required)
+    @method_decorator(http_auth_and_login)
     def dispatch(self, request, *args, **kwargs):
         self.rate_limit = RateLimit(request)
-
         # checking if rate limit is exceeded
         if self.rate_limit.is_rate_limit_exceeded():
             raise PermissionDenied

@@ -1,6 +1,7 @@
 """Tests for the views of the ``unshorten`` app."""
 import json
 import urllib2
+from base64 import b64encode
 from mock import Mock
 
 from django.test import TestCase
@@ -17,7 +18,7 @@ class UnshortenAPIViewTestCase(ViewTestMixin, TestCase):
     longMessage = True
 
     def setUp(self):
-        self.user = UserFactory()
+        self.user = UserFactory(email='foo@example.com')
         self.short_url = 'http://examp.le/short'
         self.long_url = 'http://example.com/long_url/'
         self.old_rate_limit_exceeded = RateLimit.is_rate_limit_exceeded
@@ -26,7 +27,11 @@ class UnshortenAPIViewTestCase(ViewTestMixin, TestCase):
         urllib2.urlopen = Mock(return_value=Mock(code=200, url=self.long_url))
 
     def get_data_payload(self):
-        return {'url': self.short_url}
+        return {
+            'HTTP_AUTHORIZATION': 'Basic {0}'.format(
+                b64encode('{0}:test123'.format(self.user.email))),
+            'url': self.short_url,
+        }
 
     def get_view_name(self):
         return 'unshorten_api'
@@ -38,10 +43,11 @@ class UnshortenAPIViewTestCase(ViewTestMixin, TestCase):
     def test_view(self):
         """Test for the ``UnshortenAPIView``."""
         # testing regular functionality
-        resp = self.should_be_callable_when_authenticated(self.user)
+        resp = self.is_callable()
         self.assertEqual(
             json.loads(resp.content), {'long_url': self.long_url}, msg=(
                 'Should return the long url.'))
+
         self.assertEqual(
             UnshortenURL.objects.all().count(), 1, msg=(
                 'Should have created a cached URL.'))
@@ -62,7 +68,7 @@ class UnshortenAPIViewTestCase(ViewTestMixin, TestCase):
 
         # tests for an exceeded rate limit
         RateLimit.is_rate_limit_exceeded = Mock(return_value=True)
-        resp = self.client.get(self.get_url())
+        resp = self.client.get(self.get_url(), self.get_data_payload())
         self.assertEqual(resp.status_code, 403, msg=(
             'When the rate limit is exceeded, accessing the view should'
             ' not be permitted.'))
