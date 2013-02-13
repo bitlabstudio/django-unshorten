@@ -34,6 +34,5 @@ def http_auth(func):
                 if user:
                     login(request, user)
                     return func(request, *args, **kwargs)
-                else:
-                    raise Http404
+        raise Http404
     return _decorator
