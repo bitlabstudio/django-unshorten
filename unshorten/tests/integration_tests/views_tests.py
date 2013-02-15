@@ -25,13 +25,12 @@ class UnshortenAPIViewTestCase(ViewTestMixin, TestCase):
         RateLimit.is_rate_limit_exceeded = Mock(return_value=False)
         self.old_urlopen = urllib2.urlopen
         urllib2.urlopen = Mock(return_value=Mock(code=200, url=self.long_url))
+        # adding the authorization info to the request header
+        self.client.defaults['HTTP_AUTHORIZATION'] = 'Basic {0}'.format(
+            b64encode('{0}:test123'.format(self.user.email)))
 
     def get_data_payload(self):
-        return {
-            'HTTP_AUTHORIZATION': 'Basic {0}'.format(
-                b64encode('{0}:test123'.format(self.user.email))),
-            'url': self.short_url,
-        }
+        return {'url': self.short_url}
 
     def get_view_name(self):
         return 'unshorten_api'
