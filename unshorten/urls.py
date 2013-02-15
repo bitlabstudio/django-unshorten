@@ -6,7 +6,7 @@ from unshorten.views import UnshortenAPIView
 
 urlpatterns = patterns(
     '',
-    url(r'v1/',
+    url(r'^api/v1/unshorten/',
        UnshortenAPIView.as_view(),
        name='unshorten_api',
     ),
