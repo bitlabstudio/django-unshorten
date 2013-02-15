@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 
 def get_username(identifier):
     """Checks if a string is a email adress or not."""
-    pattern = re.compile('\w+@\w+\..+')
+    pattern = re.compile('.+@\w+\..+')
     if pattern.match(identifier):
         try:
             user = User.objects.get(email=identifier)
@@ -24,8 +24,8 @@ def get_username(identifier):
 def http_auth(func):
     @wraps(func)
     def _decorator(request, *args, **kwargs):
-        if "HTTP_AUTHORIZATION" in request.GET.keys():
-            authmeth, auth = request.GET['HTTP_AUTHORIZATION'].split(' ', 1)
+        if "HTTP_AUTHORIZATION" in request.META.keys():
+            authmeth, auth = request.META['HTTP_AUTHORIZATION'].split(' ', 1)
             if authmeth.lower() == 'basic':
                 auth = auth.strip().decode('base64')
                 identifier, password = auth.split(':', 1)
