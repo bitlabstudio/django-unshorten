@@ -48,20 +48,13 @@ Usage
 -----
 
 After installation a user should be able to call the api using basic http
-authentication and a query. Example: ::
+authentication and a query. A requested URL could look like this: ::
 
-    https://example.com/unshorten/v1/?HTTP_AUTHORIZATION=Basic+&Zm9vYmFyOmJhcmZvbw==&url=http%3A%2F%2Fbitmazk.com 
+    https://example.com/unshorten/v1/?url=http%3A%2F%2Fbitmazk.com 
     
-In detail, you need to provide the ``HTTP_AUTHORIZATION`` argument with a 
-base64 encoded "username:password" or "email:password" pair preceeded by 
-``Basic`` to authenticate. ::
+And here's an example of a request with basic http authentication using curl:::
 
-    HTTP_AUTHORIZATION=Basic+&Zm9vYmFyOmJhcmZvbw==
-
-Also you of course need an ``url`` parameter which holds the actual query 
-string.::
-
-    url=http%3A%2F%2Fbitmazk.com 
+    curl --user user@example.com:password123 "https://example.com/api/v1/?url=bit.ly%2FUn9Gns"
 
 
 Contribute
