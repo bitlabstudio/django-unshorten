@@ -13,5 +13,8 @@ class APICallDayHistoryFactory(Factory):
     user = SubFactory(UserFactory)
 
 
-class APICallMonthHistoryFactory(APICallDayHistoryFactory):
+class APICallMonthHistoryFactory(Factory):
     FACTORY_FOR = APICallDayHistory
+
+    amount_api_calls = 2500
+    user = SubFactory(UserFactory)
