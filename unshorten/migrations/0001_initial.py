@@ -1,4 +1,3 @@
-# flake8: noqa
 # -*- coding: utf-8 -*-
 import datetime
 from south.db import db
@@ -20,7 +19,10 @@ class Migration(SchemaMigration):
 
         # Adding model 'APICallMonthHistory'
         db.create_table('unshorten_apicallmonthhistory', (
-            ('apicalldayhistory_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['unshorten.APICallDayHistory'], unique=True, primary_key=True)),
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('amount_api_calls', self.gf('django.db.models.fields.PositiveIntegerField')()),
+            ('creation_date', self.gf('django.db.models.fields.DateField')(auto_now_add=True, blank=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
         ))
         db.send_create_signal('unshorten', ['APICallMonthHistory'])
 
@@ -90,8 +92,11 @@ class Migration(SchemaMigration):
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
         },
         'unshorten.apicallmonthhistory': {
-            'Meta': {'object_name': 'APICallMonthHistory', '_ormbases': ['unshorten.APICallDayHistory']},
-            'apicalldayhistory_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['unshorten.APICallDayHistory']", 'unique': 'True', 'primary_key': 'True'})
+            'Meta': {'object_name': 'APICallMonthHistory'},
+            'amount_api_calls': ('django.db.models.fields.PositiveIntegerField', [], {}),
+            'creation_date': ('django.db.models.fields.DateField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
         },
         'unshorten.unshortenurl': {
             'Meta': {'object_name': 'UnshortenURL'},

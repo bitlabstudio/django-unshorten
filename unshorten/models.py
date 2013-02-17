@@ -2,9 +2,9 @@
 from django.db import models
 
 
-class APICallDayHistory(models.Model):
+class APICallHistoryBase(models.Model):
     """
-    Stores the amount of API calls per user per day.
+    Stores the amount of API calls per user per day or month.
 
     :amount_api_calls: The actual amount of calls on this day.
     :creation_date: The date these calls are logged.
@@ -25,11 +25,18 @@ class APICallDayHistory(models.Model):
         verbose_name='unshorten_profile',
     )
 
+    class Meta:
+        abstract = True
+
     def __unicode__(self):
         return '{0} ({1})'.format(self.user.email, self.amount_api_calls)
 
 
-class APICallMonthHistory(APICallDayHistory):
+class APICallDayHistory(APICallHistoryBase):
+    pass
+
+
+class APICallMonthHistory(APICallHistoryBase):
     pass
 
 
