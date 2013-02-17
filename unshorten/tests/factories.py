@@ -3,7 +3,7 @@ from factory import Factory, SubFactory
 
 from django_libs.tests.factories import UserFactory
 
-from unshorten.models import APICallDayHistory
+from unshorten.models import APICallDayHistory, APICallMonthHistory
 
 
 class APICallDayHistoryFactory(Factory):
@@ -14,7 +14,7 @@ class APICallDayHistoryFactory(Factory):
 
 
 class APICallMonthHistoryFactory(Factory):
-    FACTORY_FOR = APICallDayHistory
+    FACTORY_FOR = APICallMonthHistory
 
     amount_api_calls = 2500
     user = SubFactory(UserFactory)
