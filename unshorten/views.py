@@ -1,7 +1,5 @@
 """Views for the ``unshorten`` app."""
-import httplib
 import json
-import urllib2
 
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
@@ -10,7 +8,7 @@ from django.views.generic import View
 
 from unshorten.backend import RateLimit
 from unshorten.decorators import http_auth
-from unshorten.models import UnshortenURL
+from unshorten.utils import unshorten_url
 
 
 class UnshortenAPIView(View):
@@ -25,24 +23,9 @@ class UnshortenAPIView(View):
         return super(UnshortenAPIView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        if self.short_url:
-            self.rate_limit.log_api_call()
-            try:
-                cached_url = UnshortenURL.objects.get(short_url=self.short_url)
-            except UnshortenURL.DoesNotExist:
-                cached_url = UnshortenURL(short_url=self.short_url)
-            else:
-                return HttpResponse(
-                    json.dumps({'long_url': cached_url.long_url}))
-            try:
-                resp = urllib2.urlopen(self.short_url)
-            except (
-                    urllib2.HTTPError, urllib2.URLError,
-                    httplib.HTTPException):
-                pass
-            else:
-                if resp.code == 200:
-                    cached_url.long_url = resp.url
-                    cached_url.save()
-                    return HttpResponse(json.dumps({'long_url': resp.url}))
-        return HttpResponse(json.dumps(None))
+        if not self.short_url:
+            return HttpResponse(json.dumps(None))
+
+        self.rate_limit.log_api_call()
+        long_url = unshorten_url(self.short_url)
+        return HttpResponse(json.dumps({'long_url': long_url}))

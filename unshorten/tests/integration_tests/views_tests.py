@@ -77,5 +77,6 @@ class UnshortenAPIViewTestCase(ViewTestMixin, TestCase):
         RateLimit.is_rate_limit_exceeded = Mock(return_value=False)
         urllib2.urlopen = Mock(side_effect=urllib2.URLError('foo'))
         resp = self.client.get(self.get_url(), data=self.get_data_payload())
-        self.assertEqual(resp.content, 'null', msg=(
-            'Should return the long url.'))
+        self.assertEqual(
+            json.loads(resp.content), {'long_url': None},
+            msg='Should return null.')
