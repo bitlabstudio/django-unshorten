@@ -7,6 +7,7 @@ from .models import UnshortenURL
 
 def unshorten_url(short_url):
     """Unshortens the short_url or returns None if not possible."""
+    short_url = short_url.strip()
     if not short_url.startswith('http'):
         short_url = 'http://{0}'.format(short_url)
 
