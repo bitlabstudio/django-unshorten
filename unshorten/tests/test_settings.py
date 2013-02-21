@@ -70,6 +70,7 @@ COVERAGE_MODULE_EXCLUDES += EXTERNAL_APPS
 # ==================
 
 UNSHORTEN_RATE_LIMIT_CLASS = 'unshorten.rate_limit.SimpleRateLimit'
+UNSHORTEN_API_AUTH_CLASS = 'unshorten.auth.SimpleAuthentication'
 UNSHORTEN_DAILY_LIMIT = 5000
 
 
