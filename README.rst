@@ -34,7 +34,8 @@ Hook this app into your ``urls.py``::
         url(r'^unshorten/$', include('unshorten.urls')),
     )
 
-You need to set the class that does the rate limiting. Either set it to::
+You need to set the class that does the rate limiting.
+For Default set this to: ::
 
     UNSHORTEN_RATE_LIMIT_CLASS = 'unshorten.rate_limit.SimpleRateLimit'
 
@@ -42,6 +43,14 @@ This will simply limit the daily api calls to the following setting, you must
 also provide::
 
     UNSHORTEN_DAILY_LIMIT = 5000
+
+
+Also you need to provide the setting for ``UNSHORTEN_API_AUTH_CLASS``.
+Default is: ::
+
+    UNSHORTEN_API_AUTH_CLASS = 'unshorten.authentication.SimpleAuthentication'
+
+This provides simple http authentification as well as login authentication.
 
 
 Usage
