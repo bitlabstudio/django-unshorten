@@ -4,7 +4,8 @@
 * Logging and limiting api calls
 * Added urls
 * Added API view
-* Added decorator for basic http authentication
+* Added authentication class for basic http authentication
+* Added decorator to call the authentication class
 
 === 0.1 ===
 
