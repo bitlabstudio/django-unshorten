@@ -6,8 +6,9 @@ from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 
+from django_libs.decorators import http_auth
+
 from unshorten.backend import RateLimit
-from unshorten.decorators import http_auth
 from unshorten.utils import unshorten_url
 
 
