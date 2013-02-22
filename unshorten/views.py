@@ -29,3 +29,6 @@ class UnshortenAPIView(View):
         self.rate_limit.log_api_call()
         long_url = unshorten_url(self.short_url)
         return HttpResponse(json.dumps({'long_url': long_url}))
+
+    def post(self, request, *args, **kwargs):
+        return self.get(request, *args, **kwargs)
