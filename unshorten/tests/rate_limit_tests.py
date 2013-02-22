@@ -23,12 +23,14 @@ class SimpleRateLimitTestCase(TestCase):
         self.assertEqual(rate_limit.is_rate_limit_exceeded(), False, msg=(
             'Rate limit should not be exceeded.'))
 
+        rate_limit = RateLimit(self.request)
         self.history.amount_api_calls = settings.UNSHORTEN_DAILY_LIMIT
         self.history.save()
 
         self.assertEqual(rate_limit.is_rate_limit_exceeded(), True, msg=(
             'Rate limit should be exceeded.'))
 
+        rate_limit = RateLimit(self.request)
         self.history.delete()
         self.assertEqual(rate_limit.is_rate_limit_exceeded(), False, msg=(
             'Rate limit should not be exceeded if no history is logged.'))

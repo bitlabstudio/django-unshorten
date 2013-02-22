@@ -25,21 +25,14 @@ class SimpleRateLimit(object):
 
     def is_rate_limit_exceeded(self):
         """Returns ``True`` if the rate limit is exceeded, otherwise False."""
-        try:
-            # since we always check this first, we tie this to the class for
-            # later use
-            self.history = APICallDayHistory.objects.get(
-                user=self.user, creation_date=now().date())
-        except APICallDayHistory.DoesNotExist:
-            pass
-        else:
-            if self.history.amount_api_calls >= settings.UNSHORTEN_DAILY_LIMIT:
-                return True
+        history = self.get_history()
+        if history.amount_api_calls >= settings.UNSHORTEN_DAILY_LIMIT:
+            return True
         return False
 
     def log_api_call(self):
         """Increases the amount of logged API calls for the user by 1."""
         history = self.get_history()
         history.amount_api_calls += 1
-        history.save()
+        self._history = history.save()
         return history
