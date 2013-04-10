@@ -59,11 +59,11 @@ Usage
 After installation a user should be able to call the api using basic http
 authentication and a query. A requested URL could look like this: ::
 
-    https://example.com/unshorten/v1/?url=http%3A%2F%2Fbitmazk.com 
+    https://example.com/unshorten/api/v1/unshorten/?url=http%3A%2F%2Fbitmazk.com 
     
 And here's an example of a request with basic http authentication using curl:::
 
-    curl --user user@example.com:password123 "https://example.com/api/v1/?url=bit.ly%2FUn9Gns"
+    curl --user user@example.com:password123 "https://example.com/unshorten/api/v1/unshorten/?url=bit.ly%2FUn9Gns"
 
 
 Contribute
