@@ -52,6 +52,11 @@ Default is: ::
 
 This provides simple http authentification as well as login authentication.
 
+On your server, if you are using ``mod_wsgi`` you need to add this to your
+``httpd.conf``: ::
+
+    WSGIPassAuthorization On
+
 
 Usage
 -----
