@@ -27,6 +27,7 @@ class APICallHistoryBase(models.Model):
 
     class Meta:
         abstract = True
+        unique_together = ('creation_date', 'user')
 
     def __unicode__(self):
         return '{0} ({1})'.format(self.user.email, self.amount_api_calls)
