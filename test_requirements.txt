@@ -1,0 +1,9 @@
+fabric3
+paramiko<2.0.0
+coverage
+tox
+django-libs
+mixer
+mock
+flake8
+ipdb

@@ -2,15 +2,15 @@
 import json
 import urllib2
 from base64 import b64encode
-from mock import Mock
 
 from django.test import TestCase
 
-from django_libs.tests.factories import UserFactory
 from django_libs.tests.mixins import ViewTestMixin
+from mixer.backend.django import mixer
+from mock import Mock
 
-from unshorten.backend import RateLimit
-from unshorten.models import APICallDayHistory, UnshortenURL
+from ..backend import RateLimit
+from ..models import APICallDayHistory, UnshortenURL
 
 
 class UnshortenAPIViewTestCase(ViewTestMixin, TestCase):
@@ -18,7 +18,9 @@ class UnshortenAPIViewTestCase(ViewTestMixin, TestCase):
     longMessage = True
 
     def setUp(self):
-        self.user = UserFactory(email='foo@example.com')
+        self.user = mixer.blend('auth.User', email='foo@example.com')
+        self.user.set_password('test123')
+        self.user.save()
         self.short_url = 'http://examp.le/short'
         self.long_url = 'http://example.com/long_url/'
         self.old_rate_limit_exceeded = RateLimit.is_rate_limit_exceeded

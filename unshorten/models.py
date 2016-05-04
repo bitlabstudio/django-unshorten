@@ -1,7 +1,10 @@
 """Models for the ``unshorten`` app."""
+from django.conf import settings
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 
 
+@python_2_unicode_compatible
 class APICallHistoryBase(models.Model):
     """
     Stores the amount of API calls per user per day or month.
@@ -21,7 +24,7 @@ class APICallHistoryBase(models.Model):
     )
 
     user = models.ForeignKey(
-        'auth.User',
+        settings.AUTH_USER_MODEL,
         verbose_name='unshorten_profile',
     )
 
@@ -29,7 +32,7 @@ class APICallHistoryBase(models.Model):
         abstract = True
         unique_together = ('creation_date', 'user')
 
-    def __unicode__(self):
+    def __str__(self):
         return '{0} ({1})'.format(self.user.email, self.amount_api_calls)
 
 
@@ -41,6 +44,7 @@ class APICallMonthHistory(APICallHistoryBase):
     pass
 
 
+@python_2_unicode_compatible
 class UnshortenURL(models.Model):
     """
     Holds the information about a short to long url relation.
@@ -65,5 +69,5 @@ class UnshortenURL(models.Model):
         verbose_name='Short URL',
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return self.short_url

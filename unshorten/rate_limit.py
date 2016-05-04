@@ -2,7 +2,7 @@
 from django.conf import settings
 from django.utils.timezone import now
 
-from unshorten.models import APICallDayHistory
+from .models import APICallDayHistory
 
 
 class SimpleRateLimit(object):

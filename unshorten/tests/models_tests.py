@@ -1,7 +1,7 @@
 """Tests for the models of the ``unshorten`` app."""
 from django.test import TestCase
 
-from unshorten.models import (
+from ..models import (
     APICallDayHistory,
     APICallMonthHistory,
     UnshortenURL,

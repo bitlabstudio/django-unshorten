@@ -1,13 +1,11 @@
 """URLs for the ``unshorten`` app."""
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import url
 
-from unshorten.views import UnshortenAPIView
+from .views import UnshortenAPIView
 
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^api/v1/unshorten/',
         UnshortenAPIView.as_view(),
         name='unshorten_api'),
-
-)
+]

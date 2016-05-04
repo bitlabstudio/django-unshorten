@@ -1,7 +1,7 @@
 """Simple admin registration for ``unshorten`` models."""
 from django.contrib import admin
 
-from unshorten.models import (
+from .models import (
     APICallDayHistory,
     APICallMonthHistory,
     UnshortenURL,

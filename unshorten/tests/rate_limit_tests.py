@@ -4,9 +4,10 @@ from mock import Mock
 from django.conf import settings
 from django.test import TestCase
 
-from unshorten.backend import RateLimit
-from unshorten.models import APICallDayHistory
-from unshorten.tests.factories import APICallDayHistoryFactory
+from mixer.backend.django import mixer
+
+from ..backend import RateLimit
+from ..models import APICallDayHistory
 
 
 class SimpleRateLimitTestCase(TestCase):
@@ -14,7 +15,8 @@ class SimpleRateLimitTestCase(TestCase):
     longMessage = True
 
     def setUp(self):
-        self.history = APICallDayHistoryFactory()
+        self.history = mixer.blend('unshorten.APICallDayHistory',
+                                   amount_api_calls=2500)
         self.request = Mock(user=self.history.user)
 
     def test_is_rate_limit_exceeded(self):

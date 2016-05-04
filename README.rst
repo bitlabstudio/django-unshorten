@@ -29,10 +29,9 @@ Add ``unshorten`` to your ``INSTALLED_APPS``::
 
 Hook this app into your ``urls.py``::
 
-    urlpatterns = patterns('',
-        ...
+    urlpatterns = [
         url(r'^unshorten/$', include('unshorten.urls')),
-    )
+    ]
 
 You need to set the class that does the rate limiting.
 For Default set this to: ::
@@ -64,8 +63,8 @@ Usage
 After installation a user should be able to call the api using basic http
 authentication and a query. A requested URL could look like this: ::
 
-    https://example.com/unshorten/api/v1/unshorten/?url=http%3A%2F%2Fbitmazk.com 
-    
+    https://example.com/unshorten/api/v1/unshorten/?url=http%3A%2F%2Fbitmazk.com
+
 And here's an example of a request with basic http authentication using curl:::
 
     curl --user user@example.com:password123 "https://example.com/unshorten/api/v1/unshorten/?url=bit.ly%2FUn9Gns"
@@ -74,28 +73,21 @@ And here's an example of a request with basic http authentication using curl:::
 Contribute
 ----------
 
-If you want to contribute to this project, please perform the following steps::
+If you want to contribute to this project, please perform the following steps
+
+.. code-block:: bash
 
     # Fork this repository
     # Clone your fork
-    $ mkvirtualenv -p python2.7 django-unshorten
-    $ pip install -r requirements.txt
-    $ ./logger/tests/runtests.sh
-    # You should get no failing tests
+    mkvirtualenv django-unshorten
+    make develop
 
-    $ git co -b feature_branch master
+    git co -b feature_branch master
     # Implement your feature and tests
-    # Describe your change in the CHANGELOG.txt
-    $ git add . && git commit
-    $ git push origin feature_branch
+    git add . && git commit
+    git push -u origin feature_branch
     # Send us a pull request for your feature branch
 
-Whenever you run the tests a coverage output will be generated in
-``tests/coverage/index.html``. When adding new features, please make sure that
-you keep the coverage at 100%.
-
-
-Roadmap
--------
-
-Check the issue tracker on github for milestones and features to come.
+In order to run the tests, simply execute ``tox``. This will install two new
+environments (for Django 1.8 and Django 1.9) and run the tests against both
+environments.
